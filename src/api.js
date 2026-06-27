@@ -6,6 +6,7 @@ const API = axios.create({
 
 export const fetchBooks = () => API.get('/books');
 export const fetchBook = (id) => API.get(`/books/${id}`);
+export const fetchCategories = () => API.get('/categories');
 export const createBook = (formData) =>
   API.post('/books', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 export const updateBook = (id, formData) =>
