@@ -4,22 +4,27 @@ import PurchaseRequestModal from './PurchaseRequestModal';
 const BookCard = ({ book }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const imageUrl = book.image
-    ? `http://localhost:5000${book.image}`
-    : 'https://via.placeholder.com/300x400?text=No+Cover';
+  const BASE_URL = process.env.REACT_APP_API_URL?.replace('/api', '');
+  const imageUrl = book.image ? `${BASE_URL}${book.image}` : null;
 
   return (
     <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
       {/* Book Cover */}
       <div className="relative h-56 overflow-hidden bg-gray-100">
-        <img
-          src={imageUrl}
-          alt={book.title}
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            e.target.src = 'https://via.placeholder.com/300x400?text=No+Cover';
-          }}
-        />
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={book.title}
+            className="w-full h-full object-cover"
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center bg-amber-50 text-amber-800">
+            <span className="text-5xl">📖</span>
+            <span className="text-xs mt-2 text-center px-4 font-medium">{book.title}</span>
+          </div>
+        )}
+
         {book.stock === 0 && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
             <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
